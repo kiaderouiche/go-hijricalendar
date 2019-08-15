@@ -25,7 +25,7 @@ import (
 
 ```go
 // Create a new instance of hijri.Time
-var ht time.Time = time.Date(2018, time.June, 20, 12, 1, 1, 0, hijri.Hidjaz())
+var ht time.Time = time.Date(2018, time.June, 20, 12, 1, 1, 0, hijri.Hidjaz)
 
 // Get a new instance of time.Time
 d := hijri.New(ht)
@@ -38,7 +38,7 @@ fmt.Println(d.Date())
 
 ```go
 // Create a new instance of hijri.Time
-var ht hijri.Time = hijri.Date(1436, hijri.JoumadaAlOula, 7, 12, 59, 59, 0, hijri.Hidjaz())
+var ht hijri.Time = hijri.Date(1436, hijri.JoumadaAlOula, 7, 12, 59, 59, 0, hijri.Hidjaz)
 
 // Get a new instance of time.Time
 t := ht.HijriTime()

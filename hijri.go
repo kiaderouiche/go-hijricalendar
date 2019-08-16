@@ -11,7 +11,7 @@ import (
 	"math"
 	"time"
 
-	"./ummalquradb"
+	"github.com/kiaderouiche/hijri-calendar/ummalquradb"
 )
 
 // A Month specifies a month of the year starting from Mouharram = 1.

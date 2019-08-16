@@ -11,7 +11,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/kiaderouiche/hijri-calendar/ummalquradb"
+	"./ummalquradb"
 )
 
 // A Month specifies a month of the year starting from Mouharram = 1.
@@ -51,13 +51,13 @@ const (
 
 // List of arabic days in a week.
 const (
-	Alahad Weekday = iota
+	Alsabt Weekday = iota
+	Alahad
 	Alithnayn
 	Altholathae
 	Alalrbiae
 	Alhamiss
 	Aljomoaa
-	Alsabt
 )
 
 var months = [...]string{
@@ -116,10 +116,10 @@ func (m Month) String() string {
 	return months[m-1]
 }
 
-// Pointers to time.Location for Algeria and Hidjaz time zones.
+// Pointers to time.Location for Algeria and UmmAlQura time zones.
 var (
-	Algeria = time.FixedZone("Africa/Algiers", 3600)  // UTC + 01:00
-	Hidjaz  = time.FixedZone("Asia/UmmAlQura", 10800) // UTC + 03:00
+	Algeria   = time.FixedZone("Africa/Algiers", 3600)  // UTC + 01:00
+	UmmAlQura = time.FixedZone("Asia/UmmAlQura", 10800) // UTC + 03:00
 )
 
 func getWeekday(wd time.Weekday) Weekday {
@@ -194,7 +194,7 @@ func (t Time) Day() int {
 
 // Hour returns the hour of t in the range [0, 23].
 func (t Time) Hour() int {
-	return t.Hour
+	return t.hour
 }
 
 // Minute returns the minute offset of t in the range [0, 59].
@@ -248,7 +248,7 @@ func Now(loc *time.Location) Time {
 
 // Zone returns the zone name and its offset in seconds east of UTC of t.
 func (t Time) Zone() (string, int) {
-	return t.Time().Zone()
+	return t.HijriTime().Zone()
 }
 
 // New converts Gregorian calendar to Hijri calendar and
@@ -340,6 +340,26 @@ func (t *Time) Kcalendar(tx time.Time) {
 	t.year = year
 	t.month = Month(month)
 	t.day = day
+}
+
+// Unix returns a new instance of HijriDate from unix timestamp.
+// sec seconds and nsec nanoseconds since January 1, 1970 UTC.
+// loc is a pointer to time.Location and must not be nil.
+func Unix(sec, nsec int64, loc *time.Location) Time {
+	if loc == nil {
+		panic("hijri: the location must not be nil in call to Unix")
+	}
+	return New(time.Unix(sec, nsec).In(loc))
+}
+
+// SetUnix sets t to represent the corresponding unix timestamp of
+// sec seconds and nsec nanoseconds since January 1, 1970 UTC.
+// loc is a pointer to time.Location and must not be nil.
+func (t *Time) SetUnix(sec, nsec int64, loc *time.Location) Time {
+	if loc == nil {
+		panic("hijri: the location must not be nil in call to SetUnix")
+	}
+	return New(time.Unix(sec, nsec).In(loc))
 }
 
 // Hijri To Gregorian

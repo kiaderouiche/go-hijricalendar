@@ -3,7 +3,7 @@
 # hijri-calendar
 Hijri calendar - التقويم الهجري en Go.
 
-**Go Hijri Calendar v0.4.2** provides functionality for conversion among Hijri  to Gregorian calendars
+**Go Hijri Calendar v0.4.4** provides functionality for conversion among Hijri  to Gregorian calendars
 
 ## Installation
 

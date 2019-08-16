@@ -1,9 +1,8 @@
-// Hijri Calendar v0.4.2
+// Hijri Calendar v0.4.4
 
 // Copyright (c) 2016-2019 K.I.A.Derouiche
 
-// This source code is licensed under Apache-2.0 license that can be found in the LICENSE file.
-
+// This source code is licensed under Apache-2.0 license that can be found in the LICENSE file
 // Package hjiri provides functionality for implementation of Islamic(Hijri) Calendar.
 
 package hijri
@@ -123,16 +122,6 @@ var (
 	Hidjaz  = time.FixedZone("Asia/UmmAlQura", 10800) // UTC + 03:00
 )
 
-// New converts Gregorian calendar to Hijri calendar and
-// returns a new instance of Time corresponding to the time of t.
-// t is an instance of time.Time in Gregorian calendar.
-func New(t time.Time) Time {
-	hit := new(Time)
-	hit.Kcalendar(t)
-
-	return *hit
-}
-
 func getWeekday(wd time.Weekday) Weekday {
 	switch wd {
 	case time.Saturday:
@@ -158,13 +147,127 @@ func (t Time) Date() (int, Month, int) {
 	return t.year, t.month, t.day
 }
 
-//Adapted for Golang!
+// String returns the Hijri name of the day in week
+func (wd Weekday) String() string {
+	return days[wd]
+}
+
+// Short returns the Hijri short name of the day in week
+func (wd Weekday) Short() string {
+	return sdays[wd]
+}
+
+// Unix returns the number of seconds since January 1, 1979 UTC.
+func (t Time) Unix() int64 {
+	return t.HijriTime().Unix()
+}
+
+// UnixNano seturns the number of nanoseconds since January 1, 1970 UTC.
+func (t Time) UnixNano() int64 {
+	return t.HijriTime().UnixNano()
+}
+
+// Location returns a pointer to time.Location of t.
+func (t Time) Location() *time.Location {
+	return t.loc
+}
+
+// Clock returns the hour, minute, and second within the day specified by t.
+func (t Time) Clock() (hour, min, sec int) {
+	return t.hour, t.min, t.sec
+}
+
+// Year returns the year of t
+func (t Time) Year() int {
+	return t.year
+}
+
+// Month returns the month of t
+func (t Time) Month() Month {
+	return t.month
+}
+
+// Day returns the Days of t
+func (t Time) Day() int {
+	return t.day
+}
+
+// Hour returns the hour of t in the range [0, 23].
+func (t Time) Hour() int {
+	return t.Hour
+}
+
+// Minute returns the minute offset of t in the range [0, 59].
+func (t Time) Minute() int {
+	return t.min
+}
+
+// Second returns the seconds offset of t in the range [0, 59].
+func (t Time) Second() int {
+	return t.sec
+}
+
+// Nanosecond returns the nanoseconds offset of t in the range [0, 999999999].
+func (t Time) Nanosecond() int {
+	return t.nsec
+}
+
+//Weekday returns the weekday of t
+func (t Time) Weekday() Weekday {
+	return t.wday
+}
+
+// Add returns a new instance of Time for t+d.
+func (t Time) Add(d time.Duration) Time {
+	return New(t.HijriTime().Add(d))
+}
+
+// AddDate returns a new instance of Time for
+func (t Time) AddDate(years, months, days int) Time {
+	return New(t.HijriTime().AddDate(years, months, days))
+}
+
+// Yesterday returns a new instance of Time representing a day before the day of t
+func (t Time) Yesterday() Time {
+	return t.AddDate(0, 0, -1)
+}
+
+// Tomorrow returns a new instance of Time representing a day after the day of t.
+func (t Time) Tomorrow() Time {
+	return t.AddDate(0, 0, 1)
+}
+
+// Now returns a new instance of Time corresponding to the current time.
+// loc is a pointer to time.Location and must not be nil.
+func Now(loc *time.Location) Time {
+	if loc == nil {
+		panic("Hijri: the Location must not be nil in call to Now")
+	}
+	return New(time.Now().In(loc))
+}
+
+// Zone returns the zone name and its offset in seconds east of UTC of t.
+func (t Time) Zone() (string, int) {
+	return t.Time().Zone()
+}
+
+// New converts Gregorian calendar to Hijri calendar and
+// returns a new instance of Time corresponding to the time of t.
+// t is an instance of time.Time in Gregorian calendar.
+func New(t time.Time) Time {
+	hit := new(Time)
+	hit.Kcalendar(t)
+
+	return *hit
+}
+
 //http://www.coderanch.com/t/534271/java/java/Gregorian-Hijri-Dates-Converter-JAVA
 //Gegorean To Hijri
 
 func (t *Time) Kcalendar(tx time.Time) {
 
 	var year, month, day int
+	var epochastro float64 = 1948084
 
 	t.nsec = tx.Nanosecond()
 	t.sec = tx.Second()
@@ -177,12 +280,12 @@ func (t *Time) Kcalendar(tx time.Time) {
 	vgm := int(gm)
 
 	if vgm < 3 {
-		gy -= 1
+		gy--
 		vgm += 12
 	}
 
-	var a float64 = math.Floor(float64(gy) / 100.)
-	var b float64 = 2 - a + math.Floor(a/4.)
+	a := math.Floor(float64(gy) / 100.)
+	b := 2 - a + math.Floor(a/4.)
 
 	if gy < 1583 {
 		b = 0
@@ -213,13 +316,12 @@ func (t *Time) Kcalendar(tx time.Time) {
 	gday = int((bb - dd) - math.Floor(30.6001*ee))
 	month = int(ee - 1)
 	if ee > 13 {
-		cc += 1
+		cc++
 		month = int(ee - 13)
 	}
 	year = int(cc - 4716)
 
 	iyear := 10631. / 30.
-	var epochastro float64 = 1948084
 
 	shift1 := 8.01 / 60.
 

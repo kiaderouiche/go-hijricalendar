@@ -11,7 +11,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/kiaderouiche/hijri-calendar/ummalquradb"
+	"./ummalquradb"
 )
 
 // A Month specifies a month of the year starting from Mouharram = 1.
@@ -61,28 +61,28 @@ const (
 )
 
 var months = [...]string{
-	"Mouharram",
-	"Safar",
-	"RabiaAlAwal",
-	"RabiaAthThani",
-	"JoumadaAlOula",
-	"JoumadaAlhThania",
-	"Rajab",
-	"Chaabane",
-	"Ramadan",
-	"Chawwal",
-	"DhouAlQida",
-	"DhouAlHijja",
+	"محرم",         //"Mouharram"
+	"صفر",          //"Safar"
+	"ربيع الأول",   //"RabiaAlAwal"
+	"ربيع الثاني",  //"RabiaAthThani"
+	"جمادي الأولى", //"JoumadaAlOula"
+	"جمادي الآخرة", //"JoumadaAlhThania"
+	"رجب",          //"Rajab"
+	"شعبان",        //"Chaabane"
+	"رمضان",        //"Ramadan"
+	"شوال",         //"Chawwal"
+	"ذو القعدة",    //"DhouAlQida"
+	"ذو الحجة",     //"DhouAlHijja"
 }
 
 var days = [...]string{
-	"Alsabt",
-	"Alahad",
-	"Alithnayn",
-	"Altholathae",
-	"Alalrbiae",
-	"Alhamiss",
-	"Aljomoaa",
+	"السبت",    //"Alsabt"
+	"الاحد",    //"Alahad"
+	"الاثنين",  //"Alithnayn"
+	"الثلاثاء", //"Altholathae"
+	"الاربعاء", //"Alalrbiae"
+	"الخميس",   //"Alhamiss"
+	"الجمعة",   //"Aljomoaa"
 }
 
 var sdays = [...]string{
@@ -117,10 +117,21 @@ func (m Month) String() string {
 }
 
 // Pointers to time.Location for Algeria and UmmAlQura time zones.
-var (
-	Algeria   = time.FixedZone("Africa/Algiers", 3600)  // UTC + 01:00
-	UmmAlQura = time.FixedZone("Asia/UmmAlQura", 10800) // UTC + 03:00
-)
+func Algeria() *time.Location {
+	loc, err := time.LoadLocation("Africa/Algiers")
+	if err != nil {
+		loc = time.FixedZone("Africa/Algiers", 3600) // UTC + 01:00
+	}
+	return loc
+}
+
+func UmmAlQura() *time.Location {
+	loc, err := time.LoadLocation("Asia/UmmAlQura")
+	if err != nil {
+		loc = time.FixedZone("Asia/UmmAlQura", 10800) // UTC + 03:00
+	}
+	return loc
+}
 
 func getWeekday(wd time.Weekday) Weekday {
 	switch wd {
@@ -261,7 +272,7 @@ func New(t time.Time) Time {
 	return *hit
 }
 
-//http://www.coderanch.com/t/534271/java/java/Gregorian-Hijri-Dates-Converter-JAVA
+// http://www.coderanch.com/t/534271/java/java/Gregorian-Hijri-Dates-Converter-JAVA
 //Gegorean To Hijri
 
 func (t *Time) Kcalendar(tx time.Time) {

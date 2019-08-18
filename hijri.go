@@ -11,7 +11,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/kiaderouiche/go-hijricalendar/ummalquradb"
+	"./ummalquradb"
 )
 
 // A Month specifies a month of the year starting from Mouharram = 1.
@@ -116,15 +116,7 @@ func (m Month) String() string {
 	return months[m-1]
 }
 
-// Pointers to time.Location for Algeria and UmmAlQura time zones.
-func Algeria() *time.Location {
-	loc, err := time.LoadLocation("Africa/Algiers")
-	if err != nil {
-		loc = time.FixedZone("Africa/Algiers", 3600) // UTC + 01:00
-	}
-	return loc
-}
-
+// Pointers to time.Location for UmmAlQura time zones.
 func UmmAlQura() *time.Location {
 	loc, err := time.LoadLocation("Asia/UmmAlQura")
 	if err != nil {

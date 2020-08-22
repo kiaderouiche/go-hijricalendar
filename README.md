@@ -5,6 +5,9 @@ Hijri calendar - التقويم الهجري en Go.
 
 **Go Hijri Calendar v0.4.5** provides functionality for conversion among Hijri  to Gregorian calendars
 
+## Remark
+(Inspired by go-persian-calendar objectif unifying syntax and code)
+
 ## Installation
 
 $ go get -u github.com/kiaderouiche/go-hijricalendar

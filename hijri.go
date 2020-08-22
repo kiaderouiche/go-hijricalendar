@@ -176,7 +176,7 @@ func (t Time) Location() *time.Location {
 }
 
 // Clock returns the hour, minute, and second within the day specified by t.
-func (t Time) Clock() (hour, min, sec int) {
+func (t Time) Clock() (int, int, int) {
 	return t.hour, t.min, t.sec
 }
 

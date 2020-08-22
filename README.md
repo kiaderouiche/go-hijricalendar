@@ -6,7 +6,8 @@ Hijri calendar - التقويم الهجري en Go.
 **Go Hijri Calendar v0.4.5** provides functionality for conversion among Hijri  to Gregorian calendars
 
 ## Remark
-(Inspired by go-persian-calendar objectif unifying syntax and code)
+
+(Unifying syntax and code with  go-persian-calendar project )
 
 ## Installation
 
@@ -49,6 +50,7 @@ t := ht.HijriTime()
 // Get the date in Gregorian calendar
 fmt.Println(t.Date()) // output: 2015 February 26
 ```
+
 4- Get time information.
 
 ```go
@@ -56,17 +58,39 @@ fmt.Println(t.Date()) // output: 2015 February 26
 ht := hijri.Now(hijri.UmmAlQura())
 
 // Get year, month, day
-fmt.Printf("%v %v %v\n", ht.Year(), ht.Month(), ht.Day())
+fmt.Println(ht.Date())
+fmt.Println(ht.Year(), ht.Month(), ht.Day())
 
 // Get hour, minute, second
-fmt.Printf("Clock: %v\n", ht.Clock())
-fmt.Printf("%v %v %v\n", ht.Hour(), ht.Minute(), ht.Second())
+fmt.Println(ht.Clock())
+fmt.Println(ht.Hour(), ht.Minute(), ht.Second())
 
 // Get Unix timestamp (the number of seconds since January 1, 1970 UTC)
-fmt.Printf("Unix time: %v\n", ht.Unix())
+fmt.Println(ht.Unix())
 
 // Get yesterday, today and tomorrow
 fmt.Printf("Yesterday: %v\n", ht.Yesterday().Weekday())
 fmt.Printf("Weekday: %v\n", ht.Weekday())
 fmt.Printf("Tomorrow: %v\n", ht.Tomorrow().Weekday())
+
+// Get First and last day of week
+fmt.Println(ht.FirstWeekDay().Date()) // 
+fmt.Println(ht.LastWeekday().Date()) // 
+
+// Get First and last day of month
+fmt.Println(ht.FirstMonthDay().Weekday()) // 
+fmt.Println(ht.LastMonthDay().Weekday()) // 
+
+// Get First and last day of year
+fmt.Println(ht.FirstYearDay().Weekday()) // 
+fmt.Println(ht.LastYearDay().Weekday()) // 
+
+// Get the week of month
+fmt.Println(ht.MonthWeek()) // output: 3
+
+// Get the week of year
+fmt.Println(ht.YearWeek()) // output: 46
+
+// Get the number of remaining weeks of the year
+fmt.Println(ht.RYearWeek()) // output: 6
 ```

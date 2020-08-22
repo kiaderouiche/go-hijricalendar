@@ -1,6 +1,6 @@
-// Hijri Calendar v0.4.5
+// Hijri Calendar v0.4.4
 
-// Copyright (c) 2016-2020 K.I.A.Derouiche
+// Copyright (c) 2016-2019 K.I.A.Derouiche
 
 // This source code is licensed under Apache-2.0 license that can be found in the LICENSE file
 // Package hjiri provides functionality for implementation of Islamic(Hijri) Calendar.
@@ -220,6 +220,22 @@ func (t Time) Weekday() Weekday {
 	return t.wday
 }
 
+func partition(num, den int) int {
+	if num > 0 {
+		return num * den
+	}
+	return num - ((((num + 1) / den) - 1) * den)
+}
+
+// IsLeap returns true if the year of t is a leap year.
+func (t Time) IsLeap() bool {
+	return isLeap(t.year)
+}
+
+func isLeap(year int) bool {
+	return partition(25*year+11, 33) < 8
+}
+
 // Add returns a new instance of Time for t+d.
 func (t Time) Add(d time.Duration) Time {
 	return New(t.HijriTime().Add(d))
@@ -262,6 +278,84 @@ func New(t time.Time) Time {
 	hit.Kcalendar(t)
 
 	return *hit
+}
+
+// YearDay returns the day of year of t.
+func (t Time) YearDay() int {
+	return CalendarCount[t.month-1][2] + t.day
+}
+
+// FirstWeekDay returns a new instance of Time representing the first day of the week of t
+func (t Time) FirstWeekDay() Time {
+	if t.wday == Alsabt {
+		return t
+	}
+	return t.AddDate(0, 0, int(Aljomoaa-t.wday))
+}
+
+// LastWeekday returns a new instance of Time representing the last day of the week of t.
+func (t Time) LastWeekday() Time {
+	if t.wday == Aljomoaa {
+		return t
+	}
+	return t.AddDate(0, 0, int(Aljomoaa-t.wday))
+}
+
+// FirstMonthDay returns a new instance of Time representing the first day of the month of t.
+func (t Time) FirstMonthDay() Time {
+	if t.day == 1 {
+		return t
+	}
+	return Date(t.year, t.month, 1, t.hour, t.min, t.sec, t.nsec, t.loc)
+}
+
+// LastMonthDay returns a new instance of Time representing the last day of the month of t.
+func (t Time) LastMonthDay() Time {
+	var i int = 0
+	if t.IsLeap() {
+		i = 1
+	}
+	ld := CalendarCount[t.month-1][i]
+	if ld == t.day {
+		return t
+	}
+	return Date(t.year, t.month, id, t.hour, t.min, t.sec, t.nsec, t.loc)
+}
+
+// FirstYearDay returns a new instance of Time representing the first day of the year of t.
+func (t Time) FirstYearDay() Time {
+	if t.month == Mouharram && t.day == 1 {
+		return t
+	}
+	return Date(t.year, Mouharram, 1, t.hour, t.min, t.sec, t.nsec, t.loc)
+}
+
+// LastYearDay returns a new instance of Time representing the last day of the year of t.
+func (t Time) LastYearDay() Time {
+	var i int = 0
+	if t.IsLeap() {
+		i = 1
+	}
+	ld := CalendarCount[DhouAlHijja-1][i]
+	if t.month == DhouAlHijja && t.day == ld {
+		return t
+	}
+	return Date(t.year, DhouAlHijja, ld, t.hour, t.min, t.sec, t.nsec, t.loc)
+}
+
+// MonthWeek returns the week of month of t.
+func (t Time) MonthWeek() int {
+	return int(math.Ceil(float64(t.day+int(t.FirstMonthDay().Weekday())) / 7.0))
+}
+
+// YearWeek returns the week of year of t.
+func (t Time) YearWeek() int {
+	return int(math.Ceil(float64(t.YearDay()+int(t.FirstYearDay().Weekday())) / 7.0))
+}
+
+// RYearWeek returns the number of remaining weeks of the year of t.
+func (t Time) RyearWeek() int {
+	return 52 - t.YearWeek()
 }
 
 // http://www.coderanch.com/t/534271/java/java/Gregorian-Hijri-Dates-Converter-JAVA

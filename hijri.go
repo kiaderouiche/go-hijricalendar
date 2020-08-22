@@ -354,7 +354,7 @@ func (t Time) YearWeek() int {
 }
 
 // RYearWeek returns the number of remaining weeks of the year of t.
-func (t Time) RyearWeek() int {
+func (t Time) RYearWeek() int {
 	return 52 - t.YearWeek()
 }
 

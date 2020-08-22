@@ -319,7 +319,7 @@ func (t Time) LastMonthDay() Time {
 	if ld == t.day {
 		return t
 	}
-	return Date(t.year, t.month, id, t.hour, t.min, t.sec, t.nsec, t.loc)
+	return Date(t.year, t.month, ld, t.hour, t.min, t.sec, t.nsec, t.loc)
 }
 
 // FirstYearDay returns a new instance of Time representing the first day of the year of t.

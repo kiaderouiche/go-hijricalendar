@@ -86,11 +86,11 @@ fmt.Println(ht.FirstYearDay().Weekday()) //
 fmt.Println(ht.LastYearDay().Weekday()) // 
 
 // Get the week of month
-fmt.Println(ht.MonthWeek()) // output: 3
+fmt.Println(ht.MonthWeek()) //
 
 // Get the week of year
-fmt.Println(ht.YearWeek()) // output: 46
+fmt.Println(ht.YearWeek()) //
 
 // Get the number of remaining weeks of the year
-fmt.Println(ht.RYearWeek()) // output: 6
+fmt.Println(ht.RYearWeek()) //
 ```

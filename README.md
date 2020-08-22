@@ -3,7 +3,7 @@
 # Go Hijri Calendar
 Hijri calendar - التقويم الهجري en Go.
 
-**Go Hijri Calendar v0.4.4** provides functionality for conversion among Hijri  to Gregorian calendars
+**Go Hijri Calendar v0.4.5** provides functionality for conversion among Hijri  to Gregorian calendars
 
 ## Installation
 
@@ -25,7 +25,7 @@ import (
 
 ```go
 // Create a new instance of hijri.Time
-var ht time.Time = time.Date(2018, time.June, 20, 12, 1, 1, 0, hijri.UmmAlQura)
+var ht time.Time = time.Date(2018, time.June, 20, 12, 1, 1, 0, hijri.UmmAlQura())
 
 // Get a new instance of time.Time
 d := hijri.New(ht)
@@ -38,7 +38,7 @@ fmt.Println(d.Date())
 
 ```go
 // Create a new instance of hijri.Time
-var ht hijri.Time = hijri.Date(1436, hijri.JoumadaAlOula, 7, 12, 59, 59, 0, hijri.UmmAlQura)
+var ht hijri.Time = hijri.Date(1436, hijri.JoumadaAlOula, 7, 12, 59, 59, 0, hijri.UmmAlQura())
 
 // Get a new instance of time.Time
 t := ht.HijriTime()
@@ -49,8 +49,8 @@ fmt.Println(t.Date()) // output: 2015 February 26
 4- Get time information.
 
 ```go
-// Get a new instance of ptime.Time representing the current time
-ht := hijri.Now(hijri.UmmAlQura)
+// Get a new instance of hijri.Time representing the current time
+ht := hijri.Now(hijri.UmmAlQura())
 
 // Get year, month, day
 fmt.Printf("%v %v %v\n", ht.Year(), ht.Month(), ht.Day())

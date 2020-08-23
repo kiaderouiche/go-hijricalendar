@@ -432,7 +432,7 @@ func (t *Time) Kcalendar(tx time.Time) {
 	if month == 13 {
 		month = 12
 	}
-	day = int(z - math.Floor(29.5001*float64(month)-30))
+	day = int(z - math.Floor(29.5001*float64(month)-28))
 
 	t.year = year
 	t.month = Month(month)

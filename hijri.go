@@ -359,7 +359,7 @@ func (t Time) RYearWeek() int {
 }
 
 // http://www.coderanch.com/t/534271/java/java/Gregorian-Hijri-Dates-Converter-JAVA
-//Gegorean To Hijri
+// Convert Gegorean To Hijri
 
 func (t *Time) Kcalendar(tx time.Time) {
 
@@ -432,7 +432,7 @@ func (t *Time) Kcalendar(tx time.Time) {
 	if month == 13 {
 		month = 12
 	}
-	day = int(z - math.Floor(29.5001*float64(month)-29))
+	day = int(z - math.Floor(29.5001*float64(month)-30))
 
 	t.year = year
 	t.month = Month(month)

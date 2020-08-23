@@ -1,6 +1,6 @@
-// Hijri Calendar v0.4.4
+// Hijri Calendar v0.4.7
 
-// Copyright (c) 2016-2019 K.I.A.Derouiche
+// Copyright (c) 2016-2020 K.I.A.Derouiche
 
 // This source code is licensed under Apache-2.0 license that can be found in the LICENSE file
 // Package hjiri provides functionality for implementation of Islamic(Hijri) Calendar.
